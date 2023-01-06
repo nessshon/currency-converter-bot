@@ -20,13 +20,15 @@ from .misc.messages import delete_previous_message, delete_message, edit_message
 async def command_start(message: Message, state: FSMContext):
     emoji = await message.answer("👋")
 
+    convert_to = "USD"
+    convert_from = "RUB"
+
+    language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
+
     await delete_previous_message(message, state)
     await delete_message(message)
     await asyncio.sleep(2)
-
-    language_code = User.get_current().language_code
-    convert_from = "RUB"
-    convert_to = "USD"
 
     user_link = markdown.hlink(
         title=message.from_user.first_name,
@@ -53,12 +55,14 @@ async def command_start(message: Message, state: FSMContext):
 @rate_limit(2)
 async def command_source(message: Message, state: FSMContext):
     emoji = await message.answer("👨‍💻")
+    language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
 
     await delete_previous_message(message, state)
     await delete_message(message)
     await asyncio.sleep(2)
 
-    text = Text(message.from_user.language_code).get("source")
+    text = Text(language_code).get("source")
     await edit_message(emoji, text)
     await state.update_data(message_id=emoji.message_id)
 

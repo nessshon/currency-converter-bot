@@ -28,7 +28,9 @@ async def convert_message(state: FSMContext,
 
     convert_to = data["convert_to"]
     convert_from = data["convert_from"]
+
     language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
 
     text = Text(language_code).get("converted")
     markup = current_currency_markup(
@@ -54,6 +56,8 @@ async def choose_currency(state: FSMContext,
     data = await state.get_data()
 
     language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
+
     text = Text(language_code).get("currencies")
     markup = choose_currency_markup(language_code)
 
@@ -75,7 +79,9 @@ async def convert_message_handler(message: Message, state: FSMContext):
 
     convert_to = data["convert_to"]
     convert_from = data["convert_from"]
+
     language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
 
     if message.content_type == "text" and re.match(r'(\d+(?:\.\d+)?)', message.text):
         emoji = await message.reply("⌛️")
@@ -106,9 +112,11 @@ async def convert_message_handler(message: Message, state: FSMContext):
 async def convert_message_callback_handler(call: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
-    language_code = User.get_current().language_code
     convert_to = data["convert_to"]
     convert_from = data["convert_from"]
+
+    language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
 
     if call.data == CallbackData.CHANGE:
         await state.update_data(
@@ -129,6 +137,7 @@ async def convert_message_callback_handler(call: CallbackQuery, state: FSMContex
 @rate_limit(0.5)
 async def choose_currency_callback_handler(call: CallbackQuery, state: FSMContext):
     language_code = User.get_current().language_code
+    language_code = language_code if language_code == "ru" else "en"
 
     if call.data == CallbackData.BACK:
         await convert_message(state, call=call)
