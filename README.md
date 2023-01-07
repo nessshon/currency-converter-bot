@@ -72,7 +72,7 @@ nano .env
 
 6. Copy telegram-bot.service to /lib/systemd/system/currency-converter-bot
    ```bash
-   sudo cp telegram-bot.service /lib/systemd/system/currency-converter-bot
+   sudo cp telegram-bot.service /lib/systemd/system/currency-converter-bot.service
    ```
 7. Enable autostart on boot
    ```bash
